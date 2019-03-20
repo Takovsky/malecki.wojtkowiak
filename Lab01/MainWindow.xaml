@@ -55,7 +55,7 @@
             <TextBlock FontSize="19" Foreground="white" Background="#FF70007F"><Run Text=" "/><Run Text="User Data"/></TextBlock>
             <Image x:Name="Image2" Height="246" Source="{Binding Path=Image1.Source}" Width="275" Margin="0,7,0,0" />
 
-            <TextBlock x:Name="Tekst1" Text="{Binding Path=Name}" FontSize="20" Margin="37,10,0.2,0" Foreground="White" />
+            <TextBlock x:Name="Tekst1" Text="{Binding Path=Name}" FontSize="20" Margin="37,10,0.2,0" Foreground="White"/>
             <TextBlock x:Name="Tekst2" Text="{Binding Path=Age}" FontSize="20" Margin="37,10,87.2,0" Foreground="White"/>
 
 

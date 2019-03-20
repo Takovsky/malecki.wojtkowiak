@@ -1,7 +1,11 @@
-﻿using Microsoft.Win32;
+﻿using HtmlAgilityPack;
+using Microsoft.Win32;
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
+using System.Net.Http;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -24,6 +28,9 @@ namespace Lab01
         {
             get => people;
         }
+
+        private string baseUrl = "http://andrzej.gnatowski.staff.iiar.pwr.wroc.pl/";
+        private List<Person> personsFromUrlList = new List<Person>();
 
         public MainWindow()
         {
@@ -194,6 +201,8 @@ namespace Lab01
                 return;
             }
 
+            var urlLength = accessWebAsync(baseUrl);
+
             int countdownBreak = 10;
             timerValueTextBlockOnTimer(timerValueTextBox);
             var number = countdownAsync(ms, countdownBreak);
@@ -202,6 +211,80 @@ namespace Lab01
             var result = await number;
             timer.Dispose();
             timerValueTextBlockOffTimer(timerValueTextBox);
+            await urlLength;
+        }
+
+        async Task<int> accessWebAsync(string url)
+        {
+            HttpClient client = new HttpClient();
+            try
+            {
+                Task<string> getStringTask = client.GetStringAsync(url);
+                string urlContents = await getStringTask;
+                HtmlDocument doc = new HtmlDocument();
+                doc.LoadHtml(urlContents);
+                fillPersonsFromUrlListAsync(doc, url);
+            }
+            catch 
+            {
+            }
+            return 0;
+        }
+
+        async void fillPersonsFromUrlListAsync(HtmlDocument doc, string url)
+        {
+            var trNodes = doc.DocumentNode.SelectNodes("//tr");
+            Regex regex = new Regex(@"(?<day>\d+)-\w+-\d+");
+            foreach (var trNode in trNodes)
+            {
+                string name = "";
+                int age = 0;
+                string imageSource = "";
+                var trChildNodes = trNode.ChildNodes;
+                bool recurence = false;
+                foreach (var trChildNode in trChildNodes)
+                {
+                    if (trChildNode.Name == "td")
+                    {
+                        var childNodes = trChildNode.ChildNodes;
+                        foreach (var childNode in childNodes)
+                        {
+                            if (childNode.Name.Equals("img"))
+                            {
+                                if (childNode.Attributes["alt"] != null && childNode.Attributes["alt"].Value == "[DIR]")
+                                    recurence = true;
+                                imageSource = baseUrl + childNode.Attributes["src"].Value;
+                                Debug.WriteLine(imageSource);
+                            }
+                            else if (childNode.Name.Equals("a") && childNode.Attributes["href"] != null)
+                            {
+                                name = childNode.Attributes["href"].Value;
+                                Debug.WriteLine(name);
+                            }
+                            else if (childNode.Name.Equals("#text") && regex.Match(childNode.InnerText).Success)
+                            {
+                                Match match = regex.Match(childNode.InnerText);
+                                age = int.Parse(match.Groups["day"].ToString());
+                                Debug.WriteLine(age);
+                            }
+                        }
+                    }
+                }
+
+                if (age != 0 && !String.IsNullOrEmpty(name) && !String.IsNullOrEmpty(imageSource))
+                {
+                    if (recurence)
+                    {
+                        recurence = false;
+                        var asd = accessWebAsync(url + name);
+                        await asd;
+                    }
+                    people.Add(new Person { Age = age, Name = name, Image1 = new Image() { Source = new BitmapImage(new Uri(imageSource)) } });
+                    age = 0;
+                    name = "";
+                    imageSource = "";
+                }
+            }
         }
     }
 }
