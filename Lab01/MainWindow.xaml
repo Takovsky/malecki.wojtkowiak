@@ -47,6 +47,8 @@
             <TextBlock TextWrapping="Wrap" Text="Age" Foreground="White"/>
             <TextBox Name="ageTextBox" Height="23" TextWrapping="Wrap"   Margin="0,5,0,17"/>
             <Button Name = "addNewPersonButton" Content="Add new person" Click="AddNewPersonButton_Click" Foreground="#FFEEEEEE" Background="#FF70007F" BorderBrush="#FF70007F" MouseEnter="Mysz1" MouseLeave="Mysz2"/>
+            <TextBox x:Name="timerValueTextBox" TextWrapping="Wrap" Text="Timer value (ms)" Margin="0,40,0,0"/>
+            <Button Name="startTimerButton" Content="Start Timer" Foreground="#FFEEEEEE" Background="#FF70007F" BorderBrush="#FF70007F" Margin="0,5,0,0" Click="StartTimerButton_Click"/>
 
         </StackPanel>
         <StackPanel   Grid.Column="2" HorizontalAlignment="Center" Height="380" Margin="41.8,20,33.6,0" VerticalAlignment="Top" Width="275">
