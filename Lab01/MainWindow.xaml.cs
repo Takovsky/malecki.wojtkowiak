@@ -1,7 +1,7 @@
 ﻿using Microsoft.Win32;
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Diagnostics;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -16,6 +16,8 @@ namespace Lab01
     /// </summary>
     public partial class MainWindow : Window
     {
+        WeatherWindow weatherWindow;
+        public List<string> lastCities = new List<string>();
         ObservableCollection<Person> people = new ObservableCollection<Person>
         {
         };
@@ -29,6 +31,13 @@ namespace Lab01
         {
             InitializeComponent();
             DataContext = this;
+            this.Closed += MainWindow_Closed;
+        }
+
+        private void MainWindow_Closed(object sender, EventArgs e)
+        {
+            if (weatherWindow != null)
+                weatherWindow.Close();
         }
 
         private void AddNewPersonButton_Click(object sender, RoutedEventArgs e)
@@ -82,15 +91,16 @@ namespace Lab01
 
         private void Mysz1(object sender, MouseEventArgs e)
         {
-            addNewPersonButton.Foreground = Brushes.Black;
-
+            Button button = sender as Button;
+            button.Foreground = Brushes.Black;
         }
 
         private void Mysz2(object sender, MouseEventArgs e)
         {
             var bc = new BrushConverter();
+            Button button = sender as Button;
 
-            addNewPersonButton.Foreground = Brushes.White;
+            button.Foreground = Brushes.White;
         }
 
         private void Mysz33(object sender, MouseEventArgs e)
@@ -202,6 +212,40 @@ namespace Lab01
             var result = await number;
             timer.Dispose();
             timerValueTextBlockOffTimer(timerValueTextBox);
+        }
+
+        private void OpenWeatherInfo_Click(object sender, RoutedEventArgs e)
+        {
+
+            if (OpenWeatherInfo.Content.ToString() == "Open weather info")
+            {
+                OpenWeatherInfo.Content = "Close weather info";
+                weatherWindow = new WeatherWindow(lastCities);
+                updateWeatherWindowParameters();
+                weatherWindow.Show();
+            }
+            else
+            {
+                OpenWeatherInfo.Content = "Open weather info";
+                weatherWindow.Close();
+            }
+
+        }
+
+        private void updateWeatherWindowParameters(object sender, SizeChangedEventArgs e)
+        {
+            updateWeatherWindowParameters();
+        }
+
+        private void updateWeatherWindowParameters(object sender, EventArgs e)
+        {
+            updateWeatherWindowParameters();
+        }
+
+        private void updateWeatherWindowParameters()
+        {
+            if (weatherWindow != null)
+                weatherWindow.updateWeatherWindowParameters(this);
         }
     }
 }
