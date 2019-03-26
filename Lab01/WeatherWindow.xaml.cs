@@ -1,4 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.IO;
+using System.Text;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -12,6 +16,16 @@ namespace Lab01
     public partial class WeatherWindow : Window
     {
         private List<string> currentCities = new List<string>();
+        bool parserChange = true;
+        ObservableCollection<WeatherData> weatherList = new ObservableCollection<WeatherData>
+        {
+        };
+
+        public ObservableCollection<WeatherData> weatherItems
+        {
+            get => weatherList;
+        }
+
         public WeatherWindow()
         {
             InitializeComponent();
@@ -28,12 +42,40 @@ namespace Lab01
         {
             InitializeComponent();
             foreach (string city in cities)
-                addCity();
+                addCityAsync(city);
         }
 
-        private void addCity()
+        private async void addCityAsync(string city)
         {
+            string cityContent = await OpenWeatherContentGetter.getCityWeatherContentAsStringAsync(city);
+            WeatherData weatherData = new WeatherData();
+            string solution;
 
+            if (parserChange)
+            {
+                using (MemoryStream stream = new MemoryStream(Encoding.UTF8.GetBytes(cityContent)))
+                {
+                    weatherData = OpenWeatherParser.parseXmlReader(stream);
+                    solution = "StreamParser: ";
+                }
+            }
+            else
+            {
+                using (MemoryStream stream = new MemoryStream(Encoding.UTF8.GetBytes(cityContent)))
+                {
+                    weatherData = OpenWeatherParser.parseLinq(stream);
+                    solution = "Linq: ";
+                }
+            }
+
+            weatherList.Add(new WeatherData()
+            {
+                city = solution + weatherData.city,
+                temperature = (int)Math.Round(weatherData.temperature),
+                wind = "Wind: " + weatherData.wind
+            });
+
+            parserChange = !parserChange;
         }
 
         public void updateWeatherWindowParameters(MainWindow parent)
@@ -60,7 +102,7 @@ namespace Lab01
 
         private void CityAddButton_Click(object sender, RoutedEventArgs e)
         {
-
+            addCityAsync(cityTextBox.Text);
         }
     }
 }

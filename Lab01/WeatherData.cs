@@ -1,6 +1,6 @@
 ﻿namespace Lab01
 {
-    struct WeatherData
+    public struct WeatherData
     {
         public string city
         {

@@ -7,25 +7,37 @@ namespace Lab01
 {
     class OpenWeatherParser
     {
+        ///@todo: check for exception and implement wind parsing as now its hard coded
         public static WeatherData parseLinq(Stream stream)
         {
             WeatherData weatherData = new WeatherData();
 
             XElement xml = XElement.Load(stream);
             var city = ( from element in xml.Elements()
-                         where element.Name.Equals("city")
-                         select element.Attribute("name") );
-            weatherData.city = city.ToString();
+                         where element.Name == "city"
+                         select new
+                         {
+                             City = element.Attributes("name").FirstOrDefault(),
+                         } );
+            weatherData.city = city.FirstOrDefault().City.Value;
 
             var temperature = ( from element in xml.Elements()
                                 where element.Name == "temperature"
-                                select element.Attribute("value") );
-            weatherData.temperature = float.Parse(temperature.ToString());
+                                select new
+                                {
+                                    Temperature = element.Attributes("value").FirstOrDefault(),
+                                } );
+            weatherData.temperature = float.Parse(
+                    temperature.FirstOrDefault().Temperature.Value,
+                    System.Globalization.CultureInfo.InvariantCulture);
 
             var wind = ( from element in xml.Elements()
-                         where element.Name == "speed"
-                         select element.Attribute("name") );
-            weatherData.wind = temperature.ToString();
+                         where element.Name == "wind"
+                         select new
+                         {
+                             Wind = element.Attributes("name").FirstOrDefault(),
+                         } );
+            weatherData.wind = "wind";
 
             return weatherData;
         }

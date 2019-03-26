@@ -1,4 +1,5 @@
 ﻿<Window x:Class="Lab01.WeatherWindow"
+        x:Name="weatherWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -13,6 +14,16 @@
         <TextBlock Name ="cityTextBlock" Foreground="White" HorizontalAlignment="Left" Margin="10,10,0,0" Height="23" TextWrapping="Wrap"  Text="City" VerticalAlignment="Top" Width="120"/>
         <TextBox Name ="cityTextBox" HorizontalAlignment="Left" Height="23" Margin="10,31,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="120"/>
         <Button Name ="cityAddButton" Content="Add city" HorizontalAlignment="Left" VerticalAlignment="Top" Width="120" Margin="10,59,0,0" Foreground="#FFEEEEEE" Background="#FF70007F" BorderBrush="#FF70007F" MouseEnter="Mysz1" MouseLeave="Mysz2" Click="CityAddButton_Click"/>
-
+        <ListBox x:Name="weatherListBox" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"   ItemsSource="{Binding weatherItems, ElementName=weatherWindow}" Background="#FF70007F" Margin="200,3,3,3" BorderBrush="#FF70007F">
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock x:Name="weatherListBoxCity" Text="{Binding Path=city}" Width="200" Foreground="Gainsboro" />
+                        <TextBlock x:Name="weatherListBoxTemp" Text="{Binding Path=temperature}" Width="100" Foreground="Gainsboro"/>
+                        <TextBlock x:Name="weatherListBoxWind" Text="{Binding Path=wind}" Width="200" Foreground="Gainsboro"/>
+                    </StackPanel>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
     </Grid>
 </Window>

@@ -16,7 +16,7 @@
 
             <TextBlock TextWrapping="Wrap" Foreground="White" FontSize="19" Margin="10,20,26.2,0" Background="#FF70007F"><Run Text=" "/><Run Text="List of Users"/></TextBlock>
 
-            <ListBox x:Name="ListBox1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"   ItemsSource="{Binding Items}" Background="#FF70007F" Height="345" Margin="10,7,26.2,0" BorderBrush="#FF70007F" MouseDoubleClick="ShowData">
+            <ListBox x:Name="ListBox1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" ItemsSource="{Binding Items}" Background="#FF70007F" Height="345" Margin="10,7,26.2,0" BorderBrush="#FF70007F" MouseDoubleClick="ShowData">
                 <ListBox.ItemTemplate>
                     <DataTemplate>
                         <StackPanel Orientation="Horizontal">
