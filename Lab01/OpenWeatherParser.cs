@@ -19,7 +19,7 @@ namespace Lab01
                          {
                              City = element.Attributes("name").FirstOrDefault(),
                          } );
-            weatherData.city = city.FirstOrDefault().City.Value;
+            weatherData.city = "Linq: " + city.FirstOrDefault().City.Value;
 
             var temperature = ( from element in xml.Elements()
                                 where element.Name == "temperature"
@@ -55,7 +55,7 @@ namespace Lab01
                         switch (reader.Name)
                         {
                             case "city":
-                                weatherData.city = reader.GetAttribute("name");
+                                weatherData.city = "StreamParser: " + reader.GetAttribute("name");
                                 break;
                             case "temperature":
                                 weatherData.temperature =

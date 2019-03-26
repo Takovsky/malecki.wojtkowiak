@@ -226,6 +226,7 @@ namespace Lab01
             }
             else
             {
+                lastCities = weatherWindow.currentCities;
                 OpenWeatherInfo.Content = "Open weather info";
                 weatherWindow.Close();
             }

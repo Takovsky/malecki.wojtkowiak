@@ -7,6 +7,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
+using System.Diagnostics;
 
 namespace Lab01
 {
@@ -15,7 +16,7 @@ namespace Lab01
     /// </summary>
     public partial class WeatherWindow : Window
     {
-        private List<string> currentCities = new List<string>();
+        public List<string> currentCities = new List<string>();
         bool parserChange = true;
         ObservableCollection<WeatherData> weatherList = new ObservableCollection<WeatherData>
         {
@@ -29,13 +30,6 @@ namespace Lab01
         public WeatherWindow()
         {
             InitializeComponent();
-            this.Closing += WeatherWindow_Closing;
-        }
-
-        private void WeatherWindow_Closing(object sender, System.ComponentModel.CancelEventArgs e)
-        {
-            MainWindow mainWindow = this.Owner as MainWindow;
-            mainWindow.lastCities = currentCities;
         }
 
         public WeatherWindow(List<string> cities)
@@ -49,14 +43,12 @@ namespace Lab01
         {
             string cityContent = await OpenWeatherContentGetter.getCityWeatherContentAsStringAsync(city);
             WeatherData weatherData = new WeatherData();
-            string solution;
 
             if (parserChange)
             {
                 using (MemoryStream stream = new MemoryStream(Encoding.UTF8.GetBytes(cityContent)))
                 {
                     weatherData = OpenWeatherParser.parseXmlReader(stream);
-                    solution = "StreamParser: ";
                 }
             }
             else
@@ -64,17 +56,11 @@ namespace Lab01
                 using (MemoryStream stream = new MemoryStream(Encoding.UTF8.GetBytes(cityContent)))
                 {
                     weatherData = OpenWeatherParser.parseLinq(stream);
-                    solution = "Linq: ";
                 }
             }
 
-            weatherList.Add(new WeatherData()
-            {
-                city = solution + weatherData.city,
-                temperature = (int)Math.Round(weatherData.temperature),
-                wind = "Wind: " + weatherData.wind
-            });
-
+            currentCities.Add(weatherData.city.Substring(weatherData.city.LastIndexOf(' ') + 1));
+            weatherList.Add(weatherData);
             parserChange = !parserChange;
         }
 
