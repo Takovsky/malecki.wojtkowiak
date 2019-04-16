@@ -61,6 +61,8 @@
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Security" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Core" />
@@ -82,8 +84,26 @@
     <Compile Include="DatabaseWindow.xaml.cs">
       <DependentUpon>DatabaseWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Weather.cs">
+      <DependentUpon>Weather_model.tt</DependentUpon>
+    </Compile>
     <Compile Include="WeatherWindow.xaml.cs">
       <DependentUpon>WeatherWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Weather_model.Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Weather_model.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Weather_model.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Weather_model.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Weather_model.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Weather_model.edmx</DependentUpon>
     </Compile>
     <Page Include="DatabaseWindow.xaml">
       <SubType>Designer</SubType>
@@ -133,6 +153,13 @@
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
+    <EntityDeploy Include="Weather_model.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>Weather_model.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <None Include="Weather_model.edmx.diagram">
+      <DependentUpon>Weather_model.edmx</DependentUpon>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
@@ -148,6 +175,21 @@
       <ProductName>.NET Framework 3.5 SP1</ProductName>
       <Install>false</Install>
     </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Weather_model.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>Weather_model.edmx</DependentUpon>
+      <LastGenOutput>Weather_model.Context.cs</LastGenOutput>
+    </Content>
+    <Content Include="Weather_model.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>Weather_model.edmx</DependentUpon>
+      <LastGenOutput>Weather_model.cs</LastGenOutput>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
