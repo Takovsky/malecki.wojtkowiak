@@ -25,5 +25,6 @@
                 </DataTemplate>
             </ListBox.ItemTemplate>
         </ListBox>
+        <Button Name="weatherDatabaseButton" Content="Weather Database" HorizontalAlignment="Left" VerticalAlignment="Top" Width="120" Margin="10,120,0,0" Foreground="#FFEEEEEE" Background="#FF70007F" BorderBrush="#FF70007F" MouseEnter="Mysz1" MouseLeave="Mysz2" Click="WeatherDatabaseButton_Click"/>
     </Grid>
 </Window>
