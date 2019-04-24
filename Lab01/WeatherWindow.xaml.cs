@@ -9,6 +9,7 @@ using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Input;
 using System.Windows.Media;
+
 namespace Lab01
 {
     /// <summary>
@@ -16,11 +17,6 @@ namespace Lab01
     /// </summary>
     public partial class WeatherWindow : Window
     {
-        public WeatherDatabaseEntities weatherDb = new WeatherDatabaseEntities();
-        public CollectionViewSource weatherEntryViewSource;
-        public CollectionViewSource weatherEntitiesViewSource;
-        int Id = 1;
-
         DatabaseWindow databaseWindow;
         public List<string> currentCities = new List<string>();
         bool parserChange = true;
@@ -36,11 +32,6 @@ namespace Lab01
         public WeatherWindow()
         {
             InitializeComponent();
-
-            weatherEntryViewSource =
-                    ( (CollectionViewSource)( this.FindResource("weatherEntryViewSource") ) );
-            weatherEntitiesViewSource =
-                    ( (CollectionViewSource)( this.FindResource("weatherEntitiesViewSource") ) );
         }
 
         public void databaseWindowClosed()
@@ -53,11 +44,6 @@ namespace Lab01
             InitializeComponent();
             foreach (string city in cities)
                 addCityAsync(city);
-
-            weatherEntryViewSource =
-                    ( (CollectionViewSource)( this.FindResource("weatherEntryViewSource") ) );
-            weatherEntitiesViewSource =
-                    ( (CollectionViewSource)( this.FindResource("weatherEntitiesViewSource") ) );
         }
 
         private async void addCityAsync(string city)
@@ -110,18 +96,6 @@ namespace Lab01
         private void CityAddButton_Click(object sender, RoutedEventArgs e)
         {
             addCityAsync(cityTextBox.Text);
-
-            var newEntry = new Weather() { Id = this.Id++, City = cityTextBox.Text, Temperature = 2.5, Wind = "dupa" };
-            weatherDb.Weathers.Local.Add(newEntry);
-            try
-            {
-                weatherDb.SaveChanges();
-            }
-            catch (Exception ex)
-            {
-                weatherDb.Weathers.Local.Remove(newEntry);
-                Debug.WriteLine(ex);
-            }
         }
 
         private void WeatherDatabaseButton_Click(object sender, RoutedEventArgs e)

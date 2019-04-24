@@ -13,14 +13,21 @@
         <CollectionViewSource x:Key="personViewSource" d:DesignSource="{d:DesignInstance {x:Type local:Person}, CreateList=True}"/>
     </Window.Resources>
     <Grid>
-        <DataGrid x:Name="weatherEntryDataGrid" AutoGenerateColumns="False" Grid.Column="3" EnableRowVirtualization="True"
+        <DataGrid x:Name="weatherEntryDataGrid" AutoGenerateColumns="False" EnableRowVirtualization="True"
             ItemsSource="{Binding Source={StaticResource weatherEntryViewSource}}" RowDetailsVisibilityMode="VisibleWhenSelected"
-            HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="10,10,10,10" Background="#FF70007F" BorderBrush="#FF70007F">
+            HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="10,10,237.6,10" Background="#FF70007F" BorderBrush="#FF70007F">
             <DataGrid.Columns>
                 <DataGridTextColumn x:Name="cityColumn" Binding="{Binding City}" Header="City" Width="SizeToHeader"/>
                 <DataGridTextColumn x:Name="temperatureColumn" Binding="{Binding Temperature}" Header="Temperature" Width="SizeToHeader"/>
                 <DataGridTextColumn x:Name="windColumn" Binding="{Binding Wind}" Header="Wind" Width="SizeToHeader"/>
             </DataGrid.Columns>
         </DataGrid>
+        <Button Name="addButton" Content="Add" HorizontalAlignment="Left" Margin="709,164,0,0" VerticalAlignment="Top" Width="75" Click="Button_Click"/>
+        <TextBox Name="cityTextBox" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" Margin="664,27,0,0"/>
+        <TextBox Name="temperatureTextBox" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" Margin="664,76,0,0"/>
+        <TextBox Name="windTextBox" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" Margin="664,125,0,0"/>
+        <TextBlock HorizontalAlignment="Left" Margin="664,6,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Text="City" Foreground="Snow"/>
+        <TextBlock HorizontalAlignment="Left" Margin="664,55,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Text="Temperature" Foreground="Snow"/>
+        <TextBlock HorizontalAlignment="Left" Margin="664,104,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Text="Wind" Foreground="Snow"/>
     </Grid>
 </Window>
