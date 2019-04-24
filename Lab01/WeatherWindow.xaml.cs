@@ -1,13 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.IO;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Data;
 using System.Windows.Input;
 using System.Windows.Media;
-using System.Diagnostics;
 
 namespace Lab01
 {
@@ -16,6 +17,7 @@ namespace Lab01
     /// </summary>
     public partial class WeatherWindow : Window
     {
+        DatabaseWindow databaseWindow;
         public List<string> currentCities = new List<string>();
         bool parserChange = true;
         ObservableCollection<WeatherData> weatherList = new ObservableCollection<WeatherData>
@@ -30,6 +32,11 @@ namespace Lab01
         public WeatherWindow()
         {
             InitializeComponent();
+        }
+
+        public void databaseWindowClosed()
+        {
+            databaseWindow = null;
         }
 
         public WeatherWindow(List<string> cities)
@@ -89,6 +96,15 @@ namespace Lab01
         private void CityAddButton_Click(object sender, RoutedEventArgs e)
         {
             addCityAsync(cityTextBox.Text);
+        }
+
+        private void WeatherDatabaseButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (databaseWindow != null)
+                return;
+
+            databaseWindow = new DatabaseWindow(this);
+            databaseWindow.Show();
         }
     }
 }
