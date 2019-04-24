@@ -1,5 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.IO;
 using System.Text;
 using System.Windows;
@@ -14,9 +16,10 @@ namespace Lab01
     /// </summary>
     public partial class WeatherWindow : Window
     {
-        WeatherDatabaseEntities weatherDb = new WeatherDatabaseEntities();
-        CollectionViewSource weatherEntryViewSource;
-        CollectionViewSource weatherEntitiesViewSource;
+        public WeatherDatabaseEntities weatherDb = new WeatherDatabaseEntities();
+        public CollectionViewSource weatherEntryViewSource;
+        public CollectionViewSource weatherEntitiesViewSource;
+        int Id = 1;
 
         DatabaseWindow databaseWindow;
         public List<string> currentCities = new List<string>();
@@ -33,6 +36,11 @@ namespace Lab01
         public WeatherWindow()
         {
             InitializeComponent();
+
+            weatherEntryViewSource =
+                    ( (CollectionViewSource)( this.FindResource("weatherEntryViewSource") ) );
+            weatherEntitiesViewSource =
+                    ( (CollectionViewSource)( this.FindResource("weatherEntitiesViewSource") ) );
         }
 
         public void databaseWindowClosed()
@@ -45,6 +53,11 @@ namespace Lab01
             InitializeComponent();
             foreach (string city in cities)
                 addCityAsync(city);
+
+            weatherEntryViewSource =
+                    ( (CollectionViewSource)( this.FindResource("weatherEntryViewSource") ) );
+            weatherEntitiesViewSource =
+                    ( (CollectionViewSource)( this.FindResource("weatherEntitiesViewSource") ) );
         }
 
         private async void addCityAsync(string city)
@@ -97,6 +110,18 @@ namespace Lab01
         private void CityAddButton_Click(object sender, RoutedEventArgs e)
         {
             addCityAsync(cityTextBox.Text);
+
+            var newEntry = new Weather() { Id = this.Id++, City = cityTextBox.Text, Temperature = 2.5, Wind = "dupa" };
+            weatherDb.Weathers.Local.Add(newEntry);
+            try
+            {
+                weatherDb.SaveChanges();
+            }
+            catch (Exception ex)
+            {
+                weatherDb.Weathers.Local.Remove(newEntry);
+                Debug.WriteLine(ex);
+            }
         }
 
         private void WeatherDatabaseButton_Click(object sender, RoutedEventArgs e)

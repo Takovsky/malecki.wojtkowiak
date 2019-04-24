@@ -5,9 +5,22 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Lab01"
         mc:Ignorable="d"
-        Title="DatabaseWindow" Height="450" Width="800" Background="#FF252525" Closed="Window_Closed">
+        Title="DatabaseWindow" Height="450" Width="800" Background="#FF252525" Closed="Window_Closed" Loaded="Window_Loaded">
+    <Window.Resources>
+        <CollectionViewSource x:Key="weatherEntryViewSource" d:DesignSource="{d:DesignInstance {x:Type local:Weather}, CreateList=True}"/>
+        <CollectionViewSource x:Key="weatherEntitiesViewSource" d:DesignSource="{d:DesignInstance {x:Type local:WeatherDatabaseEntities}, CreateList=True}"/>
+        <CollectionViewSource x:Key="weatherEntitiesWeatherEntriesViewSource" Source="{Binding Weathers, Source={StaticResource weatherEntitiesViewSource}}"/>
+        <CollectionViewSource x:Key="personViewSource" d:DesignSource="{d:DesignInstance {x:Type local:Person}, CreateList=True}"/>
+    </Window.Resources>
     <Grid>
-        <DataGrid HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="10,10,10,10" Background="#FF70007F" BorderBrush="#FF70007F"/>
-
+        <DataGrid x:Name="weatherEntryDataGrid" AutoGenerateColumns="False" Grid.Column="3" EnableRowVirtualization="True"
+            ItemsSource="{Binding Source={StaticResource weatherEntryViewSource}}" RowDetailsVisibilityMode="VisibleWhenSelected"
+            HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="10,10,10,10" Background="#FF70007F" BorderBrush="#FF70007F">
+            <DataGrid.Columns>
+                <DataGridTextColumn x:Name="cityColumn" Binding="{Binding City}" Header="City" Width="SizeToHeader"/>
+                <DataGridTextColumn x:Name="temperatureColumn" Binding="{Binding Temperature}" Header="Temperature" Width="SizeToHeader"/>
+                <DataGridTextColumn x:Name="windColumn" Binding="{Binding Wind}" Header="Wind" Width="SizeToHeader"/>
+            </DataGrid.Columns>
+        </DataGrid>
     </Grid>
 </Window>

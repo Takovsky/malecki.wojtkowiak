@@ -9,6 +9,12 @@
         WindowStyle="None"
         Height="200"
         ResizeMode="NoResize">
+    <Window.Resources>
+        <CollectionViewSource x:Key="weatherEntryViewSource" d:DesignSource="{d:DesignInstance {x:Type local:Weather}, CreateList=True}"/>
+        <CollectionViewSource x:Key="weatherEntitiesViewSource" d:DesignSource="{d:DesignInstance {x:Type local:WeatherDatabaseEntities}, CreateList=True}"/>
+        <CollectionViewSource x:Key="weatherEntitiesWeatherEntriesViewSource" Source="{Binding Weathers, Source={StaticResource weatherEntitiesViewSource}}"/>
+        <CollectionViewSource x:Key="personViewSource" d:DesignSource="{d:DesignInstance {x:Type local:Person}, CreateList=True}"/>
+    </Window.Resources>
     <Grid Background="#FF252525">
         <Border Name="weatherWindowBorder" BorderBrush="#FF70007F" BorderThickness="3" HorizontalAlignment="Center" VerticalAlignment="Center"  Height="200" />
         <TextBlock Name ="cityTextBlock" Foreground="White" HorizontalAlignment="Left" Margin="10,10,0,0" Height="23" TextWrapping="Wrap"  Text="City" VerticalAlignment="Top" Width="120"/>

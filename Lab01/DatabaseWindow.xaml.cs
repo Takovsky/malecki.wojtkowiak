@@ -1,16 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
 using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 
 namespace Lab01
 {
@@ -20,15 +11,29 @@ namespace Lab01
     public partial class DatabaseWindow : Window
     {
         WeatherWindow parent;
+        WeatherDatabaseEntities weatherDb;
+        CollectionViewSource weatherEntryViewSource;
+        CollectionViewSource weatherEntitiesViewSource;
+
         public DatabaseWindow(WeatherWindow parent)
         {
             InitializeComponent();
             this.parent = parent;
+            this.weatherEntitiesViewSource = parent.weatherEntitiesViewSource;
+            this.weatherEntryViewSource = parent.weatherEntryViewSource;
+            this.weatherDb = parent.weatherDb;
         }
 
         private void Window_Closed(object sender, EventArgs e)
         {
             parent.databaseWindowClosed();
+        }
+
+        private void Window_Loaded(object sender, RoutedEventArgs e)
+        {
+            weatherDb.Weathers.Local.Concat(weatherDb.Weathers.ToList());
+            weatherEntryViewSource.Source = weatherDb.Weathers.Local;
+            weatherEntitiesViewSource.Source = weatherDb.Weathers.Local;
         }
     }
 }
