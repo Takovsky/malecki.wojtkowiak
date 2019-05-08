@@ -15,7 +15,7 @@ namespace Lab01
         WeatherDatabaseEntities weatherDb = new WeatherDatabaseEntities();
         CollectionViewSource weatherEntryViewSource;
         CollectionViewSource weatherEntitiesViewSource;
-        int Id = 1;
+        int Id = 10;
 
         public DatabaseWindow(WeatherWindow parent)
         {
